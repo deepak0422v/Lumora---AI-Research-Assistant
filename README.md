@@ -1,55 +1,104 @@
 # Lumora – AI Research Assistant
 
-Lumora is an AI-powered document intelligence platform that enables users to upload PDFs, interact with documents through natural language, and generate structured research reports.
+Lumora is an AI-powered document intelligence platform that allows users to upload PDFs, ask natural language questions, retrieve source-grounded answers, and generate structured research reports.
+
+---
 
 ## Features
 
-- Multi-document RAG
-- Semantic search using FAISS
-- Conversation memory
-- Source-grounded responses
-- PDF evidence tracking
+- Multi-document Retrieval-Augmented Generation (RAG)
+- Semantic document search using FAISS
+- Source-grounded responses with citations
 - Source preview with page references
+- PDF evidence tracking
+- Conversation memory
+- Real-time streaming responses
 - Downloadable research reports
-- Real-time response streaming
-- Modern responsive UI
+- Modern responsive interface
+
+---
 
 ## Tech Stack
 
-Frontend:
+### Frontend
 - React
 - TypeScript
 - TailwindCSS
 
-Backend:
+### Backend
 - FastAPI
 - LangChain
-- FAISS
+- FAISS Vector Store
 - HuggingFace Embeddings
-- Groq API
+- Groq LLM API
+
+---
+
+## Project Architecture
+
+User Query
+↓
+Retriever (FAISS)
+↓
+Context Builder
+↓
+Groq LLM
+↓
+Response Generation
+↓
+Citation + Source Preview
+
+---
 
 ## Installation
 
-Backend:
+### Backend
 
+```bash
 pip install -r requirements.txt
-
 uvicorn app.main:app --reload
+```
 
-Frontend:
+### Frontend
 
+```bash
+cd frontend2
 npm install
-
 npm run dev
+```
+
+---
 
 ## Environment Variables
 
-Create .env:
+Create a `.env` file:
 
-GROQ_API_KEY=your_key
+```env
+GROQ_API_KEY=your_groq_api_key
 BACKEND_URL=http://127.0.0.1:8000
+```
 
-## Future Scope
+---
+
+## Screenshots
+
+(Add Lumora screenshots here after deployment)
+
+---
+
+## Future Improvements
 
 - Embedded PDF evidence highlighting
-- Advanced research workflows
+- Research workflow automation
+- Enhanced document analytics
+
+---
+
+## Author
+
+Parasa Deepak Kumar
+
+B.Tech CSE (AIML) | Mohan Babu University
+
+GitHub: https://github.com/deepak0422v
+LinkedIn: https://linkedin.com/in/deepak0422
