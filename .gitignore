@@ -1,0 +1,33 @@
+# Environment
+.env
+*.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Vector DB
+data/vector_store/
+
+# Generated reports
+report.pdf
+
+# Frontend
+node_modules/
+dist/
+
+# Temporary frontend files
+frontend2/.tanstack/
+frontend2/.lovable/
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
