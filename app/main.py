@@ -7,6 +7,7 @@ from app.api.upload import router as upload_router
 from app.api.ask import router as ask_router
 from app.api.stream import router as stream_router
 from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -14,6 +15,9 @@ app = FastAPI(
     description="Lumora - Clarity from Complexity"
 )
 
+# Create required folders automatically
+Path("data/raw_docs").mkdir(parents=True, exist_ok=True)
+Path("data/vector_store").mkdir(parents=True, exist_ok=True)
 app.mount(
     "/raw_docs",
     StaticFiles(directory="data/raw_docs"),
