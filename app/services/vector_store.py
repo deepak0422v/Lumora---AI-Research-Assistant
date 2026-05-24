@@ -6,8 +6,7 @@ VECTOR_DB_PATH = "data/vector_store"
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 embeddings = HuggingFaceEmbeddings(
-    model_name=MODEL_NAME,
-    model_kwargs={"local_files_only": True}
+    model_name=MODEL_NAME
 )
 
 def create_metadata(chunks, source_name):
