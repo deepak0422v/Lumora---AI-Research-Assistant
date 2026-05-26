@@ -1,14 +1,17 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  tanstackStart: {
-    tsr: {
-      routesDirectory: "./src/routes",
-      generatedRouteTree: "./src/routeTree.gen.ts",
-    },
-
-    server: {
-      entry: "./src/server.ts",
-    },
-  },
+  plugins: [
+    tsConfigPaths(),
+    react(),
+    tanstackStart({
+      customViteReactPlugin: true,
+      server: {
+        entry: "./src/server.ts",
+      },
+    }),
+  ],
 });
