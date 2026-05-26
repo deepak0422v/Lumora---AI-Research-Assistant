@@ -1,14 +1,23 @@
-import { defineConfig } from "vinxi/config";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from "@tanstack/react-start/config";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    tsconfigPaths(),
-  ],
+  tsr: {
+    routesDirectory: "./src/routes",
+    generatedRouteTree: "./src/routeTree.gen.ts",
+    autoCodeSplitting: true,
+  },
+
+  vite: {
+    plugins: [
+      viteTsConfigPaths({
+        projects: ["./tsconfig.json"],
+      }),
+      tailwindcss(),
+    ],
+  },
+
   server: {
     preset: "node-server",
   },
