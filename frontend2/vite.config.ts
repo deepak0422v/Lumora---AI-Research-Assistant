@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
   plugins: [
@@ -11,7 +11,9 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(process.cwd(), "src"),
+      "@": fileURLToPath(
+        new URL("./src", import.meta.url)
+      ),
     },
   },
 });
