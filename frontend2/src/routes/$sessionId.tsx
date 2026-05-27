@@ -7,5 +7,6 @@ export const Route = createFileRoute("/$sessionId")({
 
 function SessionPage() {
   const { sessionId } = Route.useParams();
+
   return <LumoraApp sessionId={sessionId} />;
 }

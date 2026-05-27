@@ -24,7 +24,11 @@ def create_metadata(chunks, source_name):
 def create_or_load_vector_store():
     faiss_file = Path(VECTOR_DB_PATH) / "index.faiss"
     pkl_file = Path(VECTOR_DB_PATH) / "index.pkl"
-    if Path(VECTOR_DB_PATH).exists() and pkl_file.exists():
+    if (
+        Path(VECTOR_DB_PATH).exists() 
+        and pkl_file.exists()
+        and faiss_file.exists()
+    ):
         return FAISS.load_local(
             VECTOR_DB_PATH,
             embeddings,
