@@ -59,8 +59,16 @@ def add_documents_to_vector_store(chunks,source_name):
     return vector_store
 
 def load_vector_store():
-    if not Path(VECTOR_DB_PATH).exists():
+    faiss_file = Path(VECTOR_DB_PATH) / "index.faiss"
+    pkl_file = Path(VECTOR_DB_PATH) / "index.pkl"
+
+    if not (
+        Path(VECTOR_DB_PATH).exists()
+        and faiss_file.exists()
+        and pkl_file.exists()
+    ):
         return None
+
     return FAISS.load_local(
         VECTOR_DB_PATH,
         embeddings,
