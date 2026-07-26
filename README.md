@@ -62,7 +62,7 @@ uvicorn app.main:app --reload
 ### Frontend
 
 ```bash
-cd frontend2
+cd frontend
 npm install
 npm run dev
 ```
@@ -101,8 +101,4 @@ Parasa Deepak Kumar
 B.Tech CSE (AIML) | Mohan Babu University
 
 GitHub: https://github.com/deepak0422v
-<<<<<<< HEAD
 LinkedIn: https://linkedin.com/in/deepak0422
-=======
-LinkedIn: https://linkedin.com/in/deepak0422
->>>>>>> 6464868 (Add Railway deployment config)

@@ -1,13 +1,16 @@
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.report import router as report_router
+from fastapi.staticfiles import StaticFiles
+
 from app.config import settings
+from app.services.db import init_db
+from app.api.report import router as report_router
 from app.api.document import router as document_router
 from app.api.upload import router as upload_router
 from app.api.ask import router as ask_router
 from app.api.stream import router as stream_router
-from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+from app.api.session import router as session_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -15,9 +18,13 @@ app = FastAPI(
     description="Lumora - Clarity from Complexity"
 )
 
+# Initialize database schema
+init_db()
+
 # Create required folders automatically
 Path("data/raw_docs").mkdir(parents=True, exist_ok=True)
 Path("data/vector_store").mkdir(parents=True, exist_ok=True)
+
 app.mount(
     "/raw_docs",
     StaticFiles(directory="data/raw_docs"),
@@ -32,6 +39,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(session_router)
 app.include_router(upload_router)
 app.include_router(ask_router)
 app.include_router(stream_router)
@@ -44,7 +52,6 @@ def home():
         "message": "Welcome to Lumora API",
         "version": settings.VERSION
     }
-
 
 @app.get("/health")
 def health_check():

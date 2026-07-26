@@ -6,17 +6,19 @@ VECTOR_DB_PATH = "data/vector_store"
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 embeddings = HuggingFaceEmbeddings(
-    model_name=MODEL_NAME
+    model_name=MODEL_NAME,
+    model_kwargs={"local_files_only": True}
 )
 
-def create_metadata(chunks, source_name):
+def create_metadata(chunks, source_name, session_id=None):
     metadatas = []
     for idx, chunk in enumerate(chunks):
         metadatas.append(
             {
                 "source": source_name,
                 "chunk_id": idx,
-                "page": chunk["page"]   # ← comma was missing above
+                "page": chunk["page"],
+                "session_id": session_id
             }
         )
     return metadatas
@@ -36,8 +38,8 @@ def create_or_load_vector_store():
         )
     return None
 
-def add_documents_to_vector_store(chunks,source_name):
-    metadatas = create_metadata(chunks,source_name)
+def add_documents_to_vector_store(chunks, source_name, session_id=None):
+    metadatas = create_metadata(chunks, source_name, session_id)
     texts = [
         chunk["content"]   
         for chunk in chunks

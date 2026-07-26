@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from app.services.generator import llm
+from app.services.generator import llm_primary, llm_fallback
 
 report_prompt = ChatPromptTemplate.from_template("""
 {context}
@@ -33,11 +33,22 @@ def generate_report(
     context: str,
     question: str
 ):
-    chain = report_prompt | llm
-    response = chain.invoke(
-        {
-            "context": context,
-            "question": question
-        }
-    )
-    return response.content
+    try:
+        chain = report_prompt | llm_primary
+        response = chain.invoke(
+            {
+                "context": context,
+                "question": question
+            }
+        )
+        return response.content
+    except Exception as e:
+        print(f"Primary model for report generation failed, falling back to 8B: {e}")
+        chain = report_prompt | llm_fallback
+        response = chain.invoke(
+            {
+                "context": context,
+                "question": question
+            }
+        )
+        return response.content

@@ -14,7 +14,7 @@ router = APIRouter()
 @router.post("/generate-report")
 def create_report(request: QueryRequest):
     history = get_conversation_history(request.session_id)
-    results = retrieve_documents(request.question)
+    results = retrieve_documents(request.question, request.session_id)
     retrieved_context = "\n\n".join(
         f"Source:\n{doc.metadata.get('source')}\n\nContent:\n{doc.page_content}"
         for doc in results

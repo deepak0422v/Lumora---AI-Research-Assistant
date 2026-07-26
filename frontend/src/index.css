@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #08090d;
+  --card: rgba(20, 20, 35, 0.72);
+  --border: rgba(255, 255, 255, 0.08);
+
+  --primary: #8b5cf6;
+  --primary-light: #a855f7;
+  --accent: #22d3ee;
+
+  --text: #f8fafc;
+  --secondary-text: #94a3b8;
+
+  --success: #10b981;
+  --danger: #ef4444;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(168, 85, 247, 0.25),
+      rgba(217, 70, 239, 0.12) 35%,
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 15% 30%,
+      rgba(139, 92, 246, 0.15),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(192, 132, 252, 0.12),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 50% 85%,
+      rgba(124, 58, 237, 0.12),
+      transparent 60%
+    ),
+    #080511;
+
+  color: #f8fafc;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(18, 11, 34, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+  background: rgba(22, 14, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(30, 18, 56, 0.65);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.22);
+}
+
+.glass-pill {
+  background: rgba(24, 15, 45, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+
+  top: -300px;
+  left: -200px;
+
+  width: 700px;
+  height: 700px;
+
+  border-radius: 9999px;
+
+  background: rgba(124, 58, 237, 0.18);
+
+  filter: blur(140px);
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation: floatGlow 14s ease-in-out infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+
+  right: -250px;
+  bottom: -250px;
+
+  width: 700px;
+  height: 700px;
+
+  border-radius: 9999px;
+
+  background: rgba(6, 182, 212, 0.12);
+
+  filter: blur(140px);
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation: floatGlow 18s ease-in-out infinite reverse;
+}
+
+.glass {
+  background: rgba(20, 20, 35, 0.62);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.40),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+
+  transition: all .25s ease;
+}
+
+.glow-purple {
+  box-shadow:
+    0 0 20px rgba(124, 58, 237, .40),
+    0 0 60px rgba(124, 58, 237, .30),
+    0 0 100px rgba(124, 58, 237, .20);
+}
+
+/* ---------------- Feature Cards ---------------- */
+
+.feature-card {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.feature-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(124, 58, 237, .15),
+      transparent 60%
+    );
+
+  opacity: 0;
+
+  transition: opacity .4s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(168, 85, 247, .30);
+
+  box-shadow:
+    0 20px 45px rgba(124, 58, 237, .18);
+}
+
+/* ---------------- Buttons ---------------- */
+
+button,
+a,
+label,
+input[type="file"] {
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background-color .2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ---------------- Inputs ---------------- */
+
+input[type="text"],
+textarea {
+  cursor: text;
+}
+
+/* ---------------- Scrollbar ---------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, .40) transparent;
+
+  transition:
+    background-color .2s,
+    border-color .2s,
+    color .2s;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, .35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, .55);
+}
+
+/* ---------------- Text Selection ---------------- */
+
+::selection {
+  background: rgba(139, 92, 246, .45);
+  color: white;
+}
+
+/* ---------------- Animations ---------------- */
+
+@keyframes floatGlow {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-25px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------- Print Styles ---------------- */
+@media print {
+  aside,
+  button,
+  label,
+  input,
+  textarea,
+  .no-print {
+    display: none !important;
+  }
+  
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  div,
+  main,
+  section {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  p,
+  span,
+  h1,
+  h2,
+  h3,
+  li,
+  strong,
+  code,
+  td,
+  th,
+  a {
+    color: #111111 !important;
+    text-shadow: none !important;
+  }
+
+  .flex-1,
+  .overflow-y-auto {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .mb-8 {
+    margin-bottom: 2rem !important;
+    page-break-inside: avoid !important;
+  }
+}

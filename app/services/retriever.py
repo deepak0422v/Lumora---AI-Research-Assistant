@@ -26,7 +26,7 @@ def clean_query(query: str) -> str:
     return cleaned if cleaned else query
 
 
-def retrieve_documents(query: str):
+def retrieve_documents(query: str, session_id: str = None):
     vector_store = load_vector_store()
     if vector_store is None:
         return []
@@ -34,10 +34,13 @@ def retrieve_documents(query: str):
     filename_matches = extract_filenames(query)
     search_query = clean_query(query)  # ← clean before semantic search
 
+    search_filter = {"session_id": session_id} if session_id else None
+
     semantic_results = vector_store.max_marginal_relevance_search(
         query=search_query,
         k=10,
-        fetch_k=20
+        fetch_k=20,
+        filter=search_filter
     )
 
     scored_results = []
@@ -63,8 +66,6 @@ def retrieve_documents(query: str):
     seen_contents = set()
 
     for score, doc in scored_results:
-        if score < 3:
-            continue
         if doc.page_content not in seen_contents:
             unique_docs.append(doc)
             seen_contents.add(doc.page_content)

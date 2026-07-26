@@ -1,4 +1,4 @@
-# ask.py
+from pathlib import Path
 from fastapi import APIRouter
 from app.models.query import QueryRequest
 from app.services.retriever import retrieve_documents
@@ -12,21 +12,27 @@ router = APIRouter()
 @router.post("/ask")
 def ask_question(request: QueryRequest):
     history = get_conversation_history(request.session_id)
-    results = retrieve_documents(request.question)
+    results = retrieve_documents(request.question, request.session_id)
+    
     if not results:
         retrieved_context = "No relevant documents found. Answer using general knowledge."
     else:
         retrieved_context = "\n\n".join(
-            f"Source: {doc.metadata.get('source')}\n\nContent:\n{doc.page_content}"
-            for doc in results
+            f"[{idx + 1}] Source: {Path(doc.metadata.get('source', '')).name} (Page {doc.metadata.get('page', 'N/A')})\nContent:\n{doc.page_content}"
+            for idx, doc in enumerate(results)
         )
+        
     context = build_context(history, retrieved_context)  
     answer = generate_answer(context=context, question=request.question)
+    sources = format_sources(results)
+    
+    # Save user question & assistant response with sources to DB
     save_message(request.session_id, "user", request.question)
-    save_message(request.session_id, "assistant", answer)
+    save_message(request.session_id, "assistant", answer, sources=sources)
+    
     return {
         "question": request.question,
         "answer": answer,
-        "sources": format_sources(results),
+        "sources": sources,
         "evaluation": evaluate_retrieval(request.question, results)
     }

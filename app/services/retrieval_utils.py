@@ -12,19 +12,31 @@ def format_sources(documents):
     seen_sources = set()
     for doc in documents:
         source = doc.metadata.get("source")
-        filename = Path(source).name
-        if filename in seen_sources:
+        if not source:
             continue
+        filename = Path(source).name
+        page = doc.metadata.get("page")
+        snippet = doc.page_content.strip()
+        session_id = doc.metadata.get("session_id")
+        
+        # Deduplicate using (filename, page, snippet content prefix)
+        citation_key = (filename, page, snippet[:100])
+        if citation_key in seen_sources:
+            continue
+            
+        if session_id:
+            pdf_url = f"/raw_docs/{session_id}/{filename}"
+        else:
+            pdf_url = f"/raw_docs/{filename}"
+            
         formatted_sources.append({
             "source": filename,
             "chunk_id": doc.metadata.get("chunk_id"),
-            "page": doc.metadata.get("page"),
-            "snippet": compress_text(doc.page_content),
-            
-            
-            "pdf_url": f"{settings.BACKEND_URL}/raw_docs/{filename}"
+            "page": page,
+            "snippet": compress_text(snippet, max_length=220),
+            "pdf_url": pdf_url
         })
-        seen_sources.add(filename)
+        seen_sources.add(citation_key)
     return formatted_sources
 
 def evaluate_retrieval(query, documents):
