@@ -1,64 +1,88 @@
 from pathlib import Path
+
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
 VECTOR_DB_PATH = "data/vector_store"
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
-embeddings = HuggingFaceEmbeddings(
-    model_name=MODEL_NAME,
-    model_kwargs={"local_files_only": True}
-)
+# Lazy-loaded embedding model
+_embeddings = None
+
+
+def get_embeddings():
+    global _embeddings
+
+    if _embeddings is None:
+        _embeddings = HuggingFaceEmbeddings(
+            model_name=MODEL_NAME
+        )
+
+    return _embeddings
+
 
 def create_metadata(chunks, source_name, session_id=None):
     metadatas = []
+
     for idx, chunk in enumerate(chunks):
         metadatas.append(
             {
                 "source": source_name,
                 "chunk_id": idx,
                 "page": chunk["page"],
-                "session_id": session_id
+                "session_id": session_id,
             }
         )
+
     return metadatas
+
 
 def create_or_load_vector_store():
     faiss_file = Path(VECTOR_DB_PATH) / "index.faiss"
     pkl_file = Path(VECTOR_DB_PATH) / "index.pkl"
+
     if (
-        Path(VECTOR_DB_PATH).exists() 
-        and pkl_file.exists()
+        Path(VECTOR_DB_PATH).exists()
         and faiss_file.exists()
+        and pkl_file.exists()
     ):
         return FAISS.load_local(
             VECTOR_DB_PATH,
-            embeddings,
-            allow_dangerous_deserialization=True
+            get_embeddings(),
+            allow_dangerous_deserialization=True,
         )
+
     return None
+
 
 def add_documents_to_vector_store(chunks, source_name, session_id=None):
     metadatas = create_metadata(chunks, source_name, session_id)
+
     texts = [
-        chunk["content"]   
+        chunk["content"]
         for chunk in chunks
     ]
-    existing_vector_store = (create_or_load_vector_store())
+
+    existing_vector_store = create_or_load_vector_store()
+
     if existing_vector_store:
         existing_vector_store.add_texts(
             texts=texts,
-            metadatas=metadatas
+            metadatas=metadatas,
         )
         vector_store = existing_vector_store
     else:
         vector_store = FAISS.from_texts(
             texts=texts,
-            embedding=embeddings,
-            metadatas=metadatas
+            embedding=get_embeddings(),
+            metadatas=metadatas,
         )
+
+    Path(VECTOR_DB_PATH).mkdir(parents=True, exist_ok=True)
     vector_store.save_local(VECTOR_DB_PATH)
+
     return vector_store
+
 
 def load_vector_store():
     faiss_file = Path(VECTOR_DB_PATH) / "index.faiss"
@@ -73,6 +97,6 @@ def load_vector_store():
 
     return FAISS.load_local(
         VECTOR_DB_PATH,
-        embeddings,
-        allow_dangerous_deserialization=True
+        get_embeddings(),
+        allow_dangerous_deserialization=True,
     )
