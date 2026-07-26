@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter
 from app.services.vector_store import (
     load_vector_store,
-    embeddings,
+    get_embeddings,
     VECTOR_DB_PATH
 )
 from app.services.db import db_list_documents, db_delete_document
