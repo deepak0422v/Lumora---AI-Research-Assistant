@@ -1,10 +1,11 @@
 from pathlib import Path
 
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from app.config import settings
 
 VECTOR_DB_PATH = "data/vector_store"
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "models/gemini-embedding-2"
 
 # Lazy-loaded embedding model
 _embeddings = None
@@ -14,8 +15,9 @@ def get_embeddings():
     global _embeddings
 
     if _embeddings is None:
-        _embeddings = HuggingFaceEmbeddings(
-            model_name=MODEL_NAME
+        _embeddings = GoogleGenerativeAIEmbeddings(
+            model=MODEL_NAME,
+            google_api_key=settings.GEMINI_API_KEY,
         )
 
     return _embeddings
