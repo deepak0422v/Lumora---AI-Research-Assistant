@@ -116,6 +116,7 @@ export default function ChatMessage({
   const isUser = message.role === "user";
   const [copied, setCopied] = useState(false);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
+  const [sourcesExpanded, setSourcesExpanded] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
@@ -147,7 +148,10 @@ export default function ChatMessage({
 
   const preprocessContent = (text: string) => {
     if (!text) return "";
-    return text.replace(/\[([0-9]+)\]/g, "[$1](#source-$1)");
+    let cleaned = text.replace(/\s*(?:\[\d+\]\s*)+(?=[.,;:!?]|$)/g, "");
+    cleaned = cleaned.replace(/(?:\[\d+\])+/g, "");
+    cleaned = cleaned.replace(/ {2,}/g, " ");
+    return cleaned;
   };
 
   return (
@@ -229,34 +233,33 @@ export default function ChatMessage({
       {/* Sources Section */}
       {sources.length > 0 && (
         <div className="mt-5 pt-3">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#7e7399]">
-            SOURCES • {sources.length}
-          </div>
+          <button
+            onClick={() => setSourcesExpanded(!sourcesExpanded)}
+            className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-[#160b2d]/80 hover:bg-[#201042]/90 hover:border-violet-500/50 px-4 py-1.5 text-xs font-semibold text-violet-200 hover:text-white transition-all shadow-[0_0_15px_rgba(139,92,246,0.15)] cursor-pointer select-none"
+          >
+            <FileText size={13} className="text-violet-400" />
+            <span>Sources ({sources.length})</span>
+            {sourcesExpanded ? <ChevronUp size={13} className="text-violet-400" /> : <ChevronDown size={13} className="text-violet-400" />}
+          </button>
 
-          <div className="space-y-2">
-            {sources.map((src, index) => {
-              const srcId = src.id || `${src.source}-${index}`;
-              const isExpanded = expandedSource === srcId;
-              const fileName = src.source || src.title || "Document.pdf";
+          {sourcesExpanded && (
+            <div className="mt-3 space-y-2">
+              {sources.map((src, index) => {
+                const srcId = src.id || `${src.source}-${index}`;
+                const isExpanded = expandedSource === srcId;
+                const fileName = src.source || src.title || "Document.pdf";
 
-              return (
-                <div key={srcId} className="w-full max-w-md sm:max-w-lg">
-                  <div
-                    id={`source-${index + 1}`}
-                    className="flex flex-col rounded-xl border border-white/10 bg-[#130a24]/80 backdrop-blur-md overflow-hidden transition-all duration-300"
-                  >
+                return (
+                  <div key={srcId} className="w-full max-w-md sm:max-w-lg">
                     <div
-                      onClick={() => setExpandedSource(isExpanded ? null : srcId)}
-                      className="flex items-center justify-between p-2.5 cursor-pointer hover:bg-white/[0.04] transition-colors"
+                      id={`source-${index + 1}`}
+                      className="flex flex-col rounded-xl border border-white/10 bg-[#130a24]/80 backdrop-blur-md overflow-hidden transition-all duration-300"
                     >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        {/* Number Badge */}
-                        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-600/30 border border-violet-500/40 text-xs font-semibold text-violet-300">
-                          {index + 1}
-                        </div>
-
-                        {/* File Details */}
-                        <div className="flex items-center gap-1.5 min-w-0">
+                      <div
+                        onClick={() => setExpandedSource(isExpanded ? null : srcId)}
+                        className="flex items-center justify-between p-2.5 cursor-pointer hover:bg-white/[0.04] transition-colors"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
                           <FileText size={14} className="text-violet-400 shrink-0" />
                           {src.pdf_url ? (
                             <a
@@ -274,30 +277,33 @@ export default function ChatMessage({
                             </span>
                           )}
                           {src.page && (
-                            <span className="text-xs text-[#9d93b5] shrink-0">
-                              Page {src.page}
-                            </span>
+                            <>
+                              <span className="text-xs text-[#7e7399] select-none">•</span>
+                              <span className="text-xs text-[#9d93b5] shrink-0">
+                                Page {src.page}
+                              </span>
+                            </>
                           )}
+                        </div>
+
+                        {/* Chevron button */}
+                        <div className="text-[#9d93b5] hover:text-white p-0.5">
+                          {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                         </div>
                       </div>
 
-                      {/* Chevron button */}
-                      <div className="text-[#9d93b5] hover:text-white p-0.5">
-                        {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                      </div>
+                      {/* Expanded snippet view */}
+                      {isExpanded && src.snippet && (
+                        <div className="border-t border-white/10 bg-black/20 p-3 text-xs text-[#b3a8cb] leading-relaxed italic">
+                          "{src.snippet}"
+                        </div>
+                      )}
                     </div>
-
-                    {/* Expanded snippet view */}
-                    {isExpanded && src.snippet && (
-                      <div className="border-t border-white/10 bg-black/20 p-3 text-xs text-[#b3a8cb] leading-relaxed italic">
-                        "{src.snippet}"
-                      </div>
-                    )}
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
