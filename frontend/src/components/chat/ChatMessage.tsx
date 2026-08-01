@@ -126,7 +126,16 @@ export default function ChatMessage({
 
   if (isUser) {
     return (
-      <div className="mb-6 flex justify-end">
+      <div className="mb-6 flex justify-end items-start gap-2 group">
+        {onEditPrompt && (
+          <button
+            onClick={() => onEditPrompt(message.content)}
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg text-violet-300 hover:text-white hover:bg-white/10 cursor-pointer self-center"
+            title="Edit question"
+          >
+            <Edit3 size={14} />
+          </button>
+        )}
         <div className="rounded-2xl border border-violet-500/40 bg-violet-600/30 px-4.5 py-3 backdrop-blur-md shadow-[0_0_15px_rgba(124,58,237,0.15)] max-w-[85%]">
           <p className="text-sm font-medium text-white whitespace-pre-wrap leading-relaxed">{message.content}</p>
         </div>

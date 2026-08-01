@@ -86,7 +86,13 @@ def add_documents_to_vector_store(chunks, source_name, session_id=None):
     return vector_store
 
 
+_vector_store = None
+_last_loaded_mtime = 0
+
+
 def load_vector_store():
+    global _vector_store, _last_loaded_mtime
+    import os
     faiss_file = Path(VECTOR_DB_PATH) / "index.faiss"
     pkl_file = Path(VECTOR_DB_PATH) / "index.pkl"
 
@@ -95,10 +101,22 @@ def load_vector_store():
         and faiss_file.exists()
         and pkl_file.exists()
     ):
+        _vector_store = None
+        _last_loaded_mtime = 0
         return None
 
-    return FAISS.load_local(
+    try:
+        current_mtime = os.path.getmtime(str(faiss_file))
+    except OSError:
+        current_mtime = 0
+
+    if _vector_store is not None and current_mtime == _last_loaded_mtime:
+        return _vector_store
+
+    _vector_store = FAISS.load_local(
         VECTOR_DB_PATH,
         get_embeddings(),
         allow_dangerous_deserialization=True,
     )
+    _last_loaded_mtime = current_mtime
+    return _vector_store
