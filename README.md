@@ -13,19 +13,19 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 
 ## Landing Page
 
-![Landing Page](https://github.com/user-attachments/assets/...)
+![Landing Page](https://github.com/user-attachments/assets/L1.png)
 
 ---
 
 ## AI Workspace
 
-![Workspace](https://github.com/user-attachments/assets/...)
+![Workspace](https://github.com/user-attachments/assets/L2.jpeg)
 
 ---
 
-## PDF Upload
+## AI Response And Document Upload
 
-![PDF Upload](https://github.com/user-attachments/assets/...)
+![PDF Upload](https://github.com/user-attachments/assets/L3.png)
 
 ---
 
