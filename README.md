@@ -9,13 +9,26 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 
 <img src="frontend/public/icons.svg" width="120"/>
 
-## 📸 Screenshots
+# 📸 Application Preview
 
-<p align="center">
-  <img src="assets/L1.png" width="32%">
-</p>
+## Landing Page
+
+![Landing Page](https://github.com/user-attachments/assets/...)
 
 ---
+
+## AI Workspace
+
+![Workspace](https://github.com/user-attachments/assets/...)
+
+---
+
+## PDF Upload
+
+![PDF Upload](https://github.com/user-attachments/assets/...)
+
+---
+
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
