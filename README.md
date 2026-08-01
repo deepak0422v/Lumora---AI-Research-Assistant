@@ -9,6 +9,11 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 
 <img src="frontend/public/favicon.svg" width="120"/>
 
+## Live Demo
+
+Try the application here:
+https://lumora-ai-research-assistant.vercel.app/
+
 ## Landing Page
 
 ![Landing Page](assets/L1.png)
