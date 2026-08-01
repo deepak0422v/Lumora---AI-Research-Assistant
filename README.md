@@ -21,7 +21,7 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 
 ---
 
-## AI Response & Citations
+## AI Response & Documents Upload
 
 ![AI Response](assets/L3.png)
 
