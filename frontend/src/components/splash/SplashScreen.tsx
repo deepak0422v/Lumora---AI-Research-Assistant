@@ -65,7 +65,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       setTimeout(() => {
         onComplete();
       }, 500); // Overlay exit fade
-    }, 2600); // Start fade-out at 2.6s (total ~3.1s screen presence)
+    }, 3600); // Start fade-out at 3.6s (total ~4.1s screen presence)
 
     return () => clearTimeout(mainTimer);
   }, [prefersReducedMotion]);
