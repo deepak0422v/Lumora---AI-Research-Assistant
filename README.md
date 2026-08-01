@@ -9,23 +9,21 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 
 <img src="frontend/public/icons.svg" width="120"/>
 
-# 📸 Application Preview
-
 ## Landing Page
 
-![Landing Page](https://github.com/user-attachments/assets/L1.png)
+![Landing Page](assets/L1.png)
 
 ---
 
 ## AI Workspace
 
-![Workspace](https://github.com/user-attachments/assets/L2.jpeg)
+![AI Workspace](assets/L2.jpeg)
 
 ---
 
-## AI Response And Document Upload
+## AI Response & Citations
 
-![PDF Upload](https://github.com/user-attachments/assets/L3.png)
+![AI Response](assets/L3.png)
 
 ---
 
