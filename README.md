@@ -8,6 +8,9 @@ Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source
 </p>
 
 <img src="frontend/public/icons.svg" width="120"/>
+![LUMORA](assets/L1.png)
+![LUMORA](assets/L2.png)
+![LUMORA](assets/L3.png)
 
 ---
 
