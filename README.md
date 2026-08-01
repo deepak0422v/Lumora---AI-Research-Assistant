@@ -7,7 +7,7 @@
 Semantic Search • AI Chat • PDF Intelligence • Research Reports • Source Citations
 </p>
 
-<img src="frontend/public/icons.svg" width="120"/>
+<img src="frontend/public/favicon.svg" width="120"/>
 
 ## Landing Page
 
